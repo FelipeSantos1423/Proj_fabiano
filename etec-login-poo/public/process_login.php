@@ -14,8 +14,9 @@ $usuario = $usuarioDAO->validarLogin($email, $senha);
 
 if ($usuario) {
     $_SESSION['logado'] = true;
-    $_SESSION['usuario_id'] = $usuario->getId();
-    echo "Login bem-sucedido!";
+    $_SESSION['usuario'] = serialize($usuario);
+    header('Location: exibe-dados.php');
+    exit;
 } else {
     echo "Email ou senha incorretos.";
 }
