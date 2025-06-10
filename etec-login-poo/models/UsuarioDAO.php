@@ -44,4 +44,45 @@ class UsuarioDAO {
 
     return $stmt->execute(); // true se cadastrou, false se erro
 }
+
+public function buscarPorId($id) {
+    $query = "SELECT * FROM usuario WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($data) {
+        return new Usuario($data);
+    }
+    return null;
+}
+
+// Atualiza só o email
+public function atualizarEmail($id, $email) {
+    $query = "UPDATE usuario SET email = :email WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+// Atualiza email e senha
+public function atualizarEmailSenha($id, $email, $senha) {
+    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+    $query = "UPDATE usuario SET email = :email, senha_hash = :senha_hash WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':senha_hash', $senha_hash);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+public function excluir($id) {
+    $query = "DELETE FROM usuario WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
 }

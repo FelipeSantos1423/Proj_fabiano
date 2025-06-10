@@ -16,5 +16,8 @@ $usuario = unserialize($_SESSION['usuario']);
 </head>
 <body>
     <h2>Email: <?= htmlspecialchars($usuario->getEmail()); ?></h2>
+    <a href="excluir-usuario.php" onclick="return confirm('Tem certeza que deseja excluir sua conta?');">Excluir minha conta</a>
+     <a href="editar-usuario.php">Editar minha conta</a>
+
 </body>
 </html>
